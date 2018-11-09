@@ -1,0 +1,122 @@
+@import "~antd/es/style/themes/default";
+
+body {
+	user-select: none;
+	cursor: default;
+}
+
+#root {
+	display: flex;
+	min-height: 100%;
+}
+
+a:focus {
+	text-decoration: none;
+}
+
+.ant-layout, .ant-layout-footer {
+	background-color: transparent;
+}
+
+.ant-layout-content {
+	padding-top: 48px;
+}
+
+.ant-layout-footer {
+	opacity: .8;
+	font-size: 9px;
+	padding: 4px;
+	text-align: center;
+	color: rgba(0, 0, 0, .8);
+	text-transform: uppercase;
+}
+
+.spacer {
+	flex: 1;
+}
+
+.header {
+	padding: 0 12px 0 24px;
+	height: 48px;
+	line-height: 48px;
+	display: flex;
+	position: fixed;
+	width: 100%;
+	z-index: 9;
+
+	h4 {
+		text-transform: uppercase;
+		color: @text-color-dark;
+	}
+
+	ul.ant-menu {
+		line-height: 48px;
+
+		.ant-menu-item {
+			padding: 0 12px;
+
+			.anticon {
+				margin-right: 0;
+			}
+
+			&:hover {
+				background-color: @primary-color;
+			}
+		}
+	}
+}
+
+.ant-list {
+	margin-bottom: 58px;
+}
+.ant-list-item {
+	cursor: pointer;
+	transition: all .6s;
+	padding: 12px;
+
+	&:hover {
+		transition: all .3s;
+		background-color: fade(@primary-color, 20%);
+	}
+}
+
+.judo-logo {
+	position: fixed;
+	right: 1.5em;
+	bottom: 2em;
+	width: 100px;
+	height: 220px;
+	pointer-events: none;
+	opacity: .07;
+	z-index: 9;
+
+	svg {
+		width: 100px;
+		height: 220px;
+		fill: #000;
+	}
+}
+
+.fab {
+	display: flex;
+	position: fixed;
+	left: 50%;
+	bottom: 24px;
+	margin-left: -96px;
+	background: @primary-color;
+	width: 192px;
+	height: 36px;
+	line-height: 36px;
+	border-radius: 18px;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+	color: @heading-color-dark;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	transition: all .3s;
+	z-index: 5;
+
+	&:hover {
+		background: tint(@primary-color, 20%);
+	}
+}
