@@ -1,0 +1,32 @@
+@import "media-queries";
+
+.signup {
+  .media-xs ({
+    width: 90%;
+  });
+  display: block;
+  position: absolute;
+  width: 50%;
+  top:10%;
+  left:50%;
+  transform: translateX(-50%);
+  &__submit {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  &__alert {
+    margin-bottom: 16px;
+  }
+  &__forget {
+    .media-xs({
+      float: none;
+    });
+    float: right;
+  }
+  .ant-form-item {
+    margin-bottom: 12px;
+    &:last-of-type {
+      margin-bottom: 40px;
+    }
+  }
+}

@@ -7,12 +7,9 @@ import {PasswordForgetLink} from './passwordForget'
 import {auth} from '../firebase'
 import * as routes from '../constants/routes'
 import AuthUserContext from "./authUserContext"
+import {hasErrors} from "../utils/has-errors";
 
 const FormItem = Form.Item;
-
-function hasErrors(fieldsError) {
-  return Object.keys(fieldsError).some(field => fieldsError[field]);
-}
 
 const SignInPage = ({history}) =>
   <div className='signin'>
@@ -35,7 +32,7 @@ const SignInPage = ({history}) =>
 class SignIn extends Component {
   constructor(props) {
     super(props)
-    this.state = {loading: false}
+    this.state = {loading: false, error: null}
   }
 
   componentDidMount() {
@@ -52,8 +49,7 @@ class SignIn extends Component {
         this.setState({loading: true})
         auth.signIn(email, password)
           .then(() => {
-            this.setState({error: null, loading: false},
-              () => history.push(routes.HOME))
+            history.push(routes.HOME)
           })
           .catch(error => {
             this.setState({error, loading: false})
@@ -75,11 +71,10 @@ class SignIn extends Component {
             help={emailError || ''}
             validateStatus={emailError ? 'error' : ''}>
             {getFieldDecorator('email', {
-              rules: [{required: true, message: 'Please input your email!'}],
+              rules: [{required: true, message: 'Please input your email!'}, {type: 'email'}],
             })(
               <Input
                 size="large"
-                type="email"
                 prefix={<Icon type="mail" style={{color: 'rgba(0,0,0,.25)'}}/>}
                 placeholder="Email"/>
             )}
