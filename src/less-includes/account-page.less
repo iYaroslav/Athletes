@@ -1,0 +1,32 @@
+@import "media-queries";
+
+.account {
+  padding: 16px;
+  .password-change {
+    .media-xs ({
+      width: 100%;
+    });
+    display: block;
+    width: 40%;
+    margin: 32px auto auto;
+    &__submit {
+      width: 100%;
+      margin-bottom: 16px;
+    }
+    &__alert {
+      margin-bottom: 16px;
+    }
+    &__forget {
+      .media-xs({
+        float: none;
+      });
+      float: right;
+    }
+    .ant-form-item {
+      margin-bottom: 12px;
+      &:last-of-type {
+        margin-bottom: 40px;
+      }
+    }
+  }
+}

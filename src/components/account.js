@@ -6,35 +6,31 @@ import withAuthorization from './withAuthorization'
 import * as db from '../firebase/db'
 
 class AccountPage extends Component {
-	constructor(props) {
-		super(props)
+  constructor(props) {
+    super(props)
 
-		this.state = {
-			userInfo: null,
-		}
-	}
+    this.state = {
+      userInfo: null,
+    }
+  }
 
-	componentDidMount() {
-		db.getUser(this.props.authUser.uid).then(snapshot =>
-			this.setState({usersInfo: snapshot.val()}))
-	}
+  componentDidMount() {
+    db.getUser(this.props.authUser.uid).then(snapshot =>
+      this.setState({usersInfo: snapshot.val()}))
+  }
 
-	render() {
-		const {usersInfo} = this.state
+  render() {
+    const {usersInfo} = this.state
+    const {authUser} = this.props
 
-		return (<AuthUserContext.Consumer>
-				{authUser =>
-					<div>
-						{!!usersInfo && <h1>Fullname: {usersInfo.username}</h1>}
-						<h1>Account: {authUser.email}</h1>
-
-						<PasswordForgetForm />
-						<PasswordChangeForm />
-					</div>
-				}
-			</AuthUserContext.Consumer>
-		)
-	}
+    return (
+      <div className='account'>
+        {!!usersInfo && <h3>Fullname: {usersInfo.username}</h3>}
+        <h3>Account: {authUser.email}</h3>
+        <PasswordChangeForm/>
+      </div>
+    )
+  }
 }
 
 const authCondition = (authUser) => !!authUser
