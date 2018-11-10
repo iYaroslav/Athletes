@@ -13,7 +13,7 @@ class HomePage extends Component {
 
 		setTimeout(() => {
 			this.setState({
-				_athletes: [{
+				athletes: [{
 					"photo": 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1bB29J5DwlFP8lGJyi2re2PSs7OwTXwL1xe9ka1macGiPXO6L',
 					"gender": "female",
 					"name": {

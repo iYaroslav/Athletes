@@ -1,0 +1,42 @@
+.login-form {
+    display: block;
+    width: 30%;
+    top:35%;
+    left:35%;
+    position: absolute;
+}
+
+.login-form-forgot {
+    float: right;
+}
+
+.login-form-button {
+    width: 100%;
+}
+
+@media screen and (max-width: 320px) {
+    .login-form {
+        width: 100%;
+        padding: 16px!important;
+        left: 0;
+        top:10%;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .login-form {
+        width: 100%;
+        padding: 16px!important;
+        left: 0;
+        top:20%;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .login-form {
+        width: 100%;
+        padding: 16px!important;
+        left: 0;
+        top:10%;
+    }
+}
