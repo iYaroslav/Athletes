@@ -6,7 +6,7 @@
 				".write": "$uid === auth.uid"
 			}
 		},
-		"athletes": {
+		"people": {
 			"$uid": {
 				".read": "$uid === auth.uid",
 				".write": "$uid === auth.uid"
