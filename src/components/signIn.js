@@ -1,89 +1,124 @@
 import React, {Component} from 'react'
 import {withRouter, Redirect} from 'react-router-dom'
+import {Alert, Button, Form, Icon, Input, Spin} from "antd";
 
 import {SignUpLink} from './signUp'
 import {PasswordForgetLink} from './passwordForget'
 import {auth} from '../firebase'
 import * as routes from '../constants/routes'
 import AuthUserContext from "./authUserContext"
+import {hasErrors} from "../utils/has-errors";
 
-const SignInPage = ({history}) => <div>
-	<AuthUserContext.Consumer>
-		{authUser => {
-			if (authUser) {
-				return <Redirect to={routes.HOME} />
-			} else {
-				return null
-			}
-		}}
-	</AuthUserContext.Consumer>
-	<h1>SignIn</h1>
-	<SignInForm history={history} />
-	<PasswordForgetLink />
-	<SignUpLink />
-</div>
+const FormItem = Form.Item;
 
-const byPropKey = (propertyName, value) => () => ({
-	[propertyName]: value,
-})
+const SignInPage = ({history}) =>
+  <div className='signin'>
+    <AuthUserContext.Consumer>
+      {authUser => {
+        if (authUser) {
+          return <Redirect to={routes.HOME}/>
+        } else {
+          return null
+        }
+      }}
+    </AuthUserContext.Consumer>
+    <h1>SignIn</h1>
+    <SignInForm history={history}/>
+    <PasswordForgetLink className="signin__forget"/>
+    <SignUpLink/>
+  </div>
 
-const INITIAL_STATE = {
-	email: '',
-	password: '',
-	error: null,
+
+class SignIn extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {loading: false, error: null}
+  }
+
+  componentDidMount() {
+    // To disabled submit button at the beginning.
+    this.props.form.validateFields();
+  }
+
+  onSubmit = (event) => {
+    const {history} = this.props
+
+    this.props.form.validateFields((err, values) => {
+      const {email, password} = values
+      if (!err) {
+        this.setState({loading: true})
+        auth.signIn(email, password)
+          .then(() => {
+            history.push(routes.HOME)
+          })
+          .catch(error => {
+            this.setState({error, loading: false})
+          })
+      }
+    })
+
+    event.preventDefault()
+  }
+
+  render() {
+    const {getFieldDecorator, getFieldError, getFieldsError, isFieldTouched} = this.props.form;
+    const emailError = isFieldTouched('email') && getFieldError('email');
+    const passwordError = isFieldTouched('password') && getFieldError('password');
+    return (
+      <Form onSubmit={this.onSubmit} className="signin__form">
+        <Spin spinning={this.state.loading} size={'large'}>
+          <FormItem
+            help={emailError || ''}
+            validateStatus={emailError ? 'error' : ''}>
+            {getFieldDecorator('email', {
+              rules: [{required: true, message: 'Please input your email!'}, {type: 'email'}],
+            })(
+              <Input
+                size="large"
+                prefix={<Icon type="mail" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                placeholder="Email"/>
+            )}
+          </FormItem>
+
+          <FormItem
+            help={passwordError || ''}
+            validateStatus={passwordError ? 'error' : ''}>
+            {getFieldDecorator('password', {
+              rules: [{required: true, message: 'Please input your Password!'}],
+            })(
+              <Input
+                size="large"
+                prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                type="password"
+                placeholder="Password"/>
+            )}
+          </FormItem>
+
+          {this.state.error && <Alert
+            className="signin__alert"
+            message="Ошибка"
+            description={this.state.error.message}
+            type="error"
+          />}
+
+          <Button
+            type="primary"
+            size="large"
+            className="signin__submit"
+            disabled={hasErrors(getFieldsError())}
+            htmlType="submit">
+            Sign in
+          </Button>
+        </Spin>
+      </Form>
+    );
+  }
 }
 
-class SignInForm extends Component {
-	constructor(props) {
-		super(props)
-
-		this.state = {...INITIAL_STATE}
-	}
-
-	onSubmit = (event) => {
-		const {email, password} = this.state
-		const {history} = this.props
-
-		auth.signIn(email, password)
-			.then(() => {
-				this.setState({...INITIAL_STATE})
-				history.push(routes.HOME)
-			})
-			.catch(error => {
-				this.setState(byPropKey('error', error))
-			})
-
-		event.preventDefault()
-	}
-
-	render() {
-		const {email, password, error} = this.state
-		const isInvalid = password === '' || email === ''
-
-		return (<form onSubmit={this.onSubmit}>
-			<input
-				value={email}
-				onChange={event => this.setState(byPropKey('email', event.target.value))}
-				type="text"
-				placeholder="Email Address"
-			/>
-			<input
-				value={password}
-				onChange={event => this.setState(byPropKey('password', event.target.value))}
-				type="password"
-				placeholder="Password"
-			/>
-			<button disabled={isInvalid} type="submit">
-				Sign In
-			</button>
-
-			{error && <p>{error.message}</p>}
-		</form>)
-	}
-}
+const SignInForm = Form.create()(SignIn)
 
 export default withRouter(SignInPage)
 
 export {
-	SignInForm,
+  SignInForm,
 }

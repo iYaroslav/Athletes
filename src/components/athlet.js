@@ -1,11 +1,11 @@
 import React from 'react'
 import AuthUserContext from "./authUserContext"
-import HomePage from "./home"
+import AthletPage from "./athlet-page"
 import {Redirect} from "react-router-dom"
 import {SIGN_IN} from "../constants/routes"
 
-const LandingPage = () => <AuthUserContext.Consumer>
-	{authUser => authUser ? <HomePage/> : <Redirect to={SIGN_IN} />}
+const Athlet = () => <AuthUserContext.Consumer>
+	{authUser => authUser ? <AthletPage /> : <Redirect to={SIGN_IN} />}
 </AuthUserContext.Consumer>
 
-export default LandingPage
+export default Athlet

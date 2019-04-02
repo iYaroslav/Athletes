@@ -1,0 +1,27 @@
+@import "media-queries";
+
+.signin {
+  .media-xs ({
+    width: 90%;
+    top: 40%;
+  });
+  display: block;
+  position: absolute;
+  width: 40%;
+  top:50%;
+  left:50%;
+  transform: translateX(-50%) translateY(-50%);
+  &__submit {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  &__alert {
+    margin-bottom: 16px;
+  }
+  &__forget {
+    .media-xs({
+      float: none;
+    });
+    float: right;
+  }
+}

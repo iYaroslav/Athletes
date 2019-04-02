@@ -4,7 +4,7 @@ import {dissoc, omit, forEachObjIndexed} from 'ramda'
 export const createUser = (uid, username, email) => db.ref(`users/${uid}`).set({username, email})
 export const getUser = (uid) => db.ref(`users/${uid}`).once('value')
 
-const update = (obj, refFn) => forEachObjIndexed((key, value) => refFn(key).set(value), omit(['id'], obj))
+const update = (obj, refFn) => forEachObjIndexed((value, key) => refFn(key).set(value), omit(['id'], obj))
 
 const athleteRef = (uid, id, key) => id ? (
 	key ? db.ref(`people/${uid}/athlete/${id}/${key}`) : db.ref(`people/${uid}/athlete/${id}`)
