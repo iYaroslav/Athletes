@@ -1,24 +1,24 @@
-import React, {Component} from 'react'
-import {Alert, Button, Form, Icon, Input, Spin} from "antd"
-import {Link} from 'react-router-dom'
+import React, { Component } from 'react'
+import { Alert, Button, Form, Icon, Input, Spin } from 'antd'
+import { Link } from 'react-router-dom'
 import byPropKey from '../utils/byPropKey'
-import {auth} from '../firebase'
+import { auth } from '../firebase'
 import * as routes from '../constants/routes'
-import {SignUpLink} from "./signUp"
+import { SignUpLink } from './signUp'
 
 const FormItem = Form.Item
 
 const PasswordForgetPage = () =>
   <div className="forget">
     <h1>PasswordForget</h1>
-    <PasswordForgetForm/>
-    <SignUpLink/>
+    <PasswordForgetForm />
+    <SignUpLink />
   </div>
 
 const INITIAL_STATE = {
   email: '',
   error: null,
-  loading: false
+  loading: false,
 }
 
 class PasswordForgetForm extends Component {
@@ -28,21 +28,21 @@ class PasswordForgetForm extends Component {
   }
 
   onSubmit = (event) => {
-    const {email} = this.state
-    this.setState({loading: true})
+    const { email } = this.state
+    this.setState({ loading: true })
     auth.resetPassword(email)
       .then(() => {
-        this.setState(INITIAL_STATE);
+        this.setState(INITIAL_STATE)
       })
       .catch(error => {
-        this.setState({error, loading: false});
+        this.setState({ error, loading: false })
       })
 
     event.preventDefault()
   }
 
   render() {
-    const {email, error, loading} = this.state
+    const { email, error, loading } = this.state
 
     const isInvalid = email === ''
 
@@ -55,7 +55,7 @@ class PasswordForgetForm extends Component {
               type="email"
               size="large"
               placeholder="Email Address"
-              prefix={<Icon type="mail" style={{color: 'rgba(0,0,0,.25)'}}/>}
+              prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
               onChange={event => this.setState(byPropKey('email', event.target.value))}
             />
           </FormItem>
@@ -80,7 +80,7 @@ class PasswordForgetForm extends Component {
   }
 }
 
-const PasswordForgetLink = ({className}) => <p className={className}>
+const PasswordForgetLink = ({ className }) => <p className={className}>
   <Link to={routes.PASSWORD_FORGET}>Forgot Password?</Link>
 </p>
 

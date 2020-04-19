@@ -1,26 +1,26 @@
-import React, {Component} from 'react'
-import {Redirect} from 'react-router-dom'
-import {Alert, Button, Form, Icon, Input, Radio, Spin} from "antd"
+import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
+import { Alert, Button, Form, Icon, Input, Radio, Spin } from 'antd'
 import uuid from 'uuid/v4'
-import {filter, identity} from 'ramda'
+import { filter, identity } from 'ramda'
 
 import * as routes from '../constants/routes'
-import AuthUserContext from "./authUserContext"
-import {hasErrors} from "../utils/has-errors"
-import withAuthorization from "./withAuthorization"
-import {db} from '../firebase'
+import AuthUserContext from './authUserContext'
+import { hasErrors } from '../utils/has-errors'
+import withAuthorization from './withAuthorization'
+import { db } from '../firebase'
 import Avatar from './avatar'
-import {HOME} from "../constants/routes"
+import { HOME } from '../constants/routes'
 
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 
-const AthletPage = ({history, authUser}) =>
+const AthletPage = ({ history, authUser }) =>
   <div className='athlet'>
     <AuthUserContext.Consumer>
       {authUser => {
         if (!authUser) {
-          return <Redirect to={routes.HOME}/>
+          return <Redirect to={routes.HOME} />
         } else {
           return null
         }
@@ -29,9 +29,8 @@ const AthletPage = ({history, authUser}) =>
     <h1>Add athlet</h1>
     <AthletForm
       userId={authUser.uid}
-      history={history}/>
+      history={history} />
   </div>
-
 
 const AthletForm = Form.create()(class extends Component {
   constructor(props) {
@@ -39,7 +38,7 @@ const AthletForm = Form.create()(class extends Component {
     this.state = {
       loading: false,
       error: null,
-      athletId: props.athlet ? props.athlet.id : uuid()
+      athletId: props.athlet ? props.athlet.id : uuid(),
     }
   }
 
@@ -50,21 +49,21 @@ const AthletForm = Form.create()(class extends Component {
 
   onSubmit = (event) => {
     event.preventDefault()
-    const {history} = this.props
+    const { history } = this.props
     this.props.form.validateFields((err, values) => {
       if (!err) {
         values = filter(identity, values)
-        this.setState({loading: true})
+        this.setState({ loading: true })
         db.createAthlete(this.props.userId, {
-            ...values,
-            photo: this.state.link || "",
-            id: this.state.athletId
-          })
+          ...values,
+          photo: this.state.link || '',
+          id: this.state.athletId,
+        })
           .then(() => {
             history.push(HOME)
           })
           .catch((error) => {
-            this.setState({error, loading: false})
+            this.setState({ error, loading: false })
           })
       }
     })
@@ -72,7 +71,7 @@ const AthletForm = Form.create()(class extends Component {
   }
 
   render() {
-    const {getFieldDecorator, getFieldError, getFieldsError, isFieldTouched} = this.props.form
+    const { getFieldDecorator, getFieldError, getFieldsError, isFieldTouched } = this.props.form
     const emailError = isFieldTouched('email') && getFieldError('email')
     const nationalityError = isFieldTouched('nationality') && getFieldError('nationality')
     const nameError = isFieldTouched('name') && getFieldError('name')
@@ -85,7 +84,7 @@ const AthletForm = Form.create()(class extends Component {
           filename={this.state.athletId}
           imageUrl={this.state.link}
           size='large'
-          onSuccess={link => this.setState({link}, () => console.log(link))}/>
+          onSuccess={link => this.setState({ link }, () => console.log(link))} />
         <Form onSubmit={this.onSubmit.bind(this)} className="athlet__form">
           <Spin spinning={this.state.loading} size={'large'}>
             <FormItem
@@ -93,12 +92,12 @@ const AthletForm = Form.create()(class extends Component {
               help={emailError || ''}
               validateStatus={emailError ? 'error' : ''}>
               {getFieldDecorator('email', {
-                rules: [{type: 'email'}],
+                rules: [{ type: 'email' }],
               })(
                 <Input
                   size="large"
-                  prefix={<Icon type="mail" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                  placeholder="Email"/>
+                  prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  placeholder="Email" />,
               )}
             </FormItem>
 
@@ -109,8 +108,8 @@ const AthletForm = Form.create()(class extends Component {
               {getFieldDecorator('nationality')(
                 <Input
                   size="large"
-                  prefix={<Icon type="flag" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                  placeholder="Nationality"/>
+                  prefix={<Icon type="flag" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  placeholder="Nationality" />,
               )}
             </FormItem>
 
@@ -119,12 +118,12 @@ const AthletForm = Form.create()(class extends Component {
               help={nameError || ''}
               validateStatus={nameError ? 'error' : ''}>
               {getFieldDecorator('name', {
-                rules: [{required: true}],
+                rules: [{ required: true }],
               })(
                 <Input
                   size="large"
-                  prefix={<Icon type="idcard" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                  placeholder="Name"/>
+                  prefix={<Icon type="idcard" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  placeholder="Name" />,
               )}
             </FormItem>
 
@@ -133,13 +132,13 @@ const AthletForm = Form.create()(class extends Component {
               help={birthdayError || ''}
               validateStatus={birthdayError ? 'error' : ''}>
               {getFieldDecorator('birthday', {
-                rules: [{required: true}],
+                rules: [{ required: true }],
               })(
                 <Input
                   size="large"
                   type="number"
-                  prefix={<Icon type="idcard" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                  placeholder="Name"/>
+                  prefix={<Icon type="idcard" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  placeholder="Name" />,
               )}
             </FormItem>
 
@@ -147,8 +146,8 @@ const AthletForm = Form.create()(class extends Component {
               {getFieldDecorator('passport')(
                 <Input
                   size="large"
-                  prefix={<Icon type="idcard" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                  placeholder="Last name"/>
+                  prefix={<Icon type="idcard" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  placeholder="Last name" />,
               )}
             </FormItem>
 
@@ -156,8 +155,8 @@ const AthletForm = Form.create()(class extends Component {
               {getFieldDecorator('city')(
                 <Input
                   size="large"
-                  prefix={<Icon type="idcard" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                  placeholder="Last name"/>
+                  prefix={<Icon type="idcard" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  placeholder="Last name" />,
               )}
             </FormItem>
 
@@ -166,12 +165,12 @@ const AthletForm = Form.create()(class extends Component {
               help={genderError || ''}
               validateStatus={genderError ? 'error' : ''}>
               {getFieldDecorator('gender', {
-                rules: [{required: true}],
+                rules: [{ required: true }],
               })(
                 <RadioGroup>
                   <Radio value={1}>Mail</Radio>
                   <Radio value={2}>Female</Radio>
-                </RadioGroup>
+                </RadioGroup>,
               )}
             </FormItem>
 

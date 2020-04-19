@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
-import {auth} from '../firebase'
-import {message, Form, Spin, Input, Alert, Button, Icon} from "antd";
-import {hasErrors} from "../utils/has-errors";
+import React, { Component } from 'react'
+import { auth } from '../firebase'
+import { message, Form, Spin, Input, Alert, Button, Icon } from 'antd'
+import { hasErrors } from '../utils/has-errors'
 
-const FormItem = Form.Item;
+const FormItem = Form.Item
 
 const INITIAL_STATE = {
   loading: false,
@@ -21,33 +21,33 @@ class PasswordChangeForm extends Component {
   }
 
   compareToFirstPassword = (rule, value, callback) => {
-    const form = this.props.form;
+    const form = this.props.form
     if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
+      callback('Two passwords that you enter is inconsistent!')
     } else {
-      callback();
+      callback()
     }
   }
 
   validateToNextPassword = (rule, value, callback) => {
-    const form = this.props.form;
+    const form = this.props.form
     if (value) {
-      form.validateFields(['confirm'], {force: true});
+      form.validateFields(['confirm'], { force: true })
     }
-    callback();
+    callback()
   }
 
   onSubmit = (event) => {
 
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.setState({loading: true})
+        this.setState({ loading: true })
         auth.updatePassword(values.password)
           .then(() => {
             this.setState(INITIAL_STATE, () => message.success('Password has been changed'))
           })
           .catch(error => {
-            this.setState({loading: false, error})
+            this.setState({ loading: false, error })
           })
       }
     })
@@ -55,9 +55,9 @@ class PasswordChangeForm extends Component {
   }
 
   render() {
-    const {getFieldDecorator, getFieldError, getFieldsError, isFieldTouched} = this.props.form;
-    const passwordError = isFieldTouched('password') && getFieldError('password');
-    const confirmError = isFieldTouched('confirm') && getFieldError('confirm');
+    const { getFieldDecorator, getFieldError, getFieldsError, isFieldTouched } = this.props.form
+    const passwordError = isFieldTouched('password') && getFieldError('password')
+    const confirmError = isFieldTouched('confirm') && getFieldError('confirm')
 
     return (
       <Form className="password-change" onSubmit={this.onSubmit}>
@@ -70,7 +70,7 @@ class PasswordChangeForm extends Component {
               rules: [{
                 required: true, message: 'Please input your password!',
               }, {
-                min: 6
+                min: 6,
               }, {
                 validator: this.validateToNextPassword,
               }],
@@ -79,8 +79,8 @@ class PasswordChangeForm extends Component {
                 size="large"
                 type="password"
                 placeholder="Enter new password"
-                prefix={<Icon type="key" style={{color: 'rgba(0,0,0,.25)'}}/>}
-              />
+                prefix={<Icon type="key" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              />,
             )}
           </FormItem>
           <FormItem
@@ -98,8 +98,8 @@ class PasswordChangeForm extends Component {
                 size="large"
                 type="password"
                 placeholder="Confirm password"
-                prefix={<Icon type="key" style={{color: 'rgba(0,0,0,.25)'}}/>}
-              />
+                prefix={<Icon type="key" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              />,
             )}
           </FormItem>
           {this.state.error && <Alert
